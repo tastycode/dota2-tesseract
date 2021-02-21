@@ -15,7 +15,7 @@ export class IndexPage extends React.Component<Props> {
   }
 
   componentDidMount() {
-    console.log(this.props.gipData);
+    // console.log(this.props.gipData);
   }
 
   render() {

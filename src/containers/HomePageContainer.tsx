@@ -1,17 +1,19 @@
-import Fab from '@material-ui/core/Fab';
-import TextField from '@material-ui/core/TextField';
-import SnackBar from '@material-ui/core/Snackbar'
 import Box from '@material-ui/core/Box'
-import AddIcon from '@material-ui/icons/Search';
-import * as React from 'react';
+import Fab from '@material-ui/core/Fab';
+import SnackBar from '@material-ui/core/Snackbar'
+import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import AddIcon from '@material-ui/icons/Search';
+import copy from 'copy-to-clipboard'
+import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import copy from 'copy-to-clipboard'
 
 import { media } from '../../styles/styles';
 import { addTodoThunk } from '../redux/todo/slice';
 import SingleTodoContainer from './SingleTodoContainer';
+
+// tslint:disable-next-line:no-var-requires
 const dotaItems = require('../items.json')
 const Wrapper = styled.div`
   display: flex;
@@ -67,37 +69,33 @@ const HomePageContainer: React.FC = () => {
   const [items, setItems] =  React.useState([])
   const [selectedItemIndex, setSelectedItemIndex] = React.useState(-1)
   const [snackOpen, setSnackOpen] = React.useState(false)
-  const handleItemKeyPressed = (event) => {
-      console.log('item press', event.key)
-      if (event.key === 'Enter') {
-        //const el = document.getElementById(item.name)
-        //console.log(el)
-      }
-  }
+
   const handleKeyPressed = (event: React.KeyboardEvent) => {
+    const currentItem = items[selectedItemIndex] as any
     if (event.key === 'Enter') {
-        if (selectedItemIndex == -1) {
+        if (selectedItemIndex === -1) {
             handleSearch()
         } else {
-            copyItem(items[selectedItemIndex])
+            copyItem(currentItem)
         }
       handleSearch();
     } else if (event.key === 'ArrowRight' && selectedItemIndex !== -1) {
-        window.open(`https://liquipedia.net/dota2/${items[selectedItemIndex].name}`)
+        window.open(`https://liquipedia.net/dota2/${currentItem.name}`)
         
     }else if (event.key === 'ArrowDown') {
-        let nextIndex = selectedItemIndex + 1
+        const nextIndex = selectedItemIndex + 1;
         if (items[nextIndex]) {
-            setSelectedItemIndex(nextIndex)
-            document.querySelector(`a[name="${items[nextIndex].name}"]`).scrollIntoView()
+            setSelectedItemIndex(nextIndex);
+            (document.getElementById((items[nextIndex] as any).name) as any).scrollIntoView()
         }
     } else if (event.key === 'ArrowUp') {
         const nextIndex = selectedItemIndex - 1
         if (items[nextIndex]) {
             setSelectedItemIndex(nextIndex)
             if (nextIndex > -1) {
-                document.querySelector(`a[name="${items[nextIndex].name}"]`).scrollIntoView()
+              (document.getElementById((items[nextIndex] as any).name) as any).scrollIntoView()
             } else {
+              (document.getElementById('search') as any).scrollIntoView()
                 window.location.hash = `#search`
             }
         }
@@ -108,7 +106,7 @@ const HomePageContainer: React.FC = () => {
     if (searchText.length === 0) {
       return setError(true);
     }
-    const matches = dotaItems.filter((dotaItem) => {
+    const matches = dotaItems.filter((dotaItem: any) => {
         const rex = new RegExp(`${searchText}`, 'i')
         const textLimit = dotaItem.html.indexOf('Version History')
         return rex.test(dotaItem.name) || rex.test(dotaItem.html.slice(0, textLimit))
@@ -116,13 +114,13 @@ const HomePageContainer: React.FC = () => {
     setItems(matches)
   };
 
-  const copyItem = (item) => {
+  const copyItem = (item: any) => {
       copy(item.name)
       setSnackOpen(true)
   }
 
 
-  const processedHtml = (itemHtml) => {
+  const processedHtml = (itemHtml: string) => {
       let html =  itemHtml.replaceAll("/commons/images/", "//liquipedia.net/commons/images/")
       html = html.replaceAll('/dota2/', 'https://liquidpedia.net/dota2/')
       return html
@@ -138,14 +136,13 @@ const HomePageContainer: React.FC = () => {
         open={snackOpen}
         autoHideDuration={6000}
         onClose={() => setSnackOpen(false)}
-        message={selectedItemIndex > -1 ? `Copied "${items[selectedItemIndex].name}"` : 'Item copied'}
+        message={selectedItemIndex > -1 ? `Copied "${(items[selectedItemIndex] as any).name}"` : 'Item copied'}
       />
 
       <Column>
         <Row>
-        <a name='search'></a>
           <TextField
-          tabindex="0"
+     
               autoFocus
             error={error}
             onKeyDown={handleKeyPressed}
@@ -158,7 +155,6 @@ const HomePageContainer: React.FC = () => {
             value={searchText}
           />
           <Fab
-            tabindex="1"
             href={'#'}
             size={'small'}
             onClick={handleSearch}
@@ -171,17 +167,17 @@ const HomePageContainer: React.FC = () => {
       </Column>
       <Spacer />
       <Column>
-        {items.map((item, i) => (
+        {items.map((item: any, i) => (
         <Row>
             <Wrapper>
                       <Typography
         align={'left'}
-        color={i == selectedItemIndex ? 'secondary': 'textPrimary'}
+        color={i === selectedItemIndex ? 'secondary': 'textPrimary'}
         style={{backgroundColor: i === selectedItemIndex ? '#fff' : 'transparent'}}
         variant={'h5'}
         gutterBottom
       >
-      <a name={item.name}
+      <a id={item.name as string}
                       tabIndex={i+2}
                       onClick={() => copyItem(item)}
                       >

@@ -54,12 +54,6 @@ export const AboutPage: NextPage<Props> = ({ gipData }) => {
   );
 };
 AboutPage.getInitialProps = async ({ req, res }) => {
-  if (req && res) {
-    console.log('Runs only on server');
-  }
-  if (!req && !res) {
-    console.log('Runs on the server once and the client once each visit');
-  }
   // The data will fetch either on the client or the server server
   // on first page visit or reload and client when using links
   try {
