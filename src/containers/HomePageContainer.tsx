@@ -206,7 +206,6 @@ const HomePageContainer: React.FC = () => {
       onClick={() => openItem(item)}
       >
           Open
-        <LaunchIcon/>
       </Button>
       <Button
       variant="contained"
@@ -217,7 +216,6 @@ const HomePageContainer: React.FC = () => {
       onClick={() => copyItem(item)}
       >
           Copy
-        <LaunchIcon/>
       </Button>
 
       </div>
