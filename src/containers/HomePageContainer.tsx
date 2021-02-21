@@ -1,6 +1,6 @@
 import Fab from '@material-ui/core/Fab';
 import TextField from '@material-ui/core/TextField';
-import SnackBar from '@material-ui/core/SnackBar'
+import SnackBar from '@material-ui/core/Snackbar'
 import Box from '@material-ui/core/Box'
 import AddIcon from '@material-ui/icons/Search';
 import * as React from 'react';
@@ -110,7 +110,6 @@ const HomePageContainer: React.FC = () => {
     }
     const matches = dotaItems.filter((dotaItem) => {
         const rex = new RegExp(`${searchText}`, 'i')
-        console.log({dotaItem})
         const textLimit = dotaItem.html.indexOf('Version History')
         return rex.test(dotaItem.name) || rex.test(dotaItem.html.slice(0, textLimit))
     })
