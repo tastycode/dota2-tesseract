@@ -32,7 +32,7 @@ const Layout: React.FC = ({ children }) => {
   return (
     <Wrapper>
       <Head>
-        <title>Next-SMRT - Todo</title>
+        <title>Dota2 Items Tesseract</title>
       </Head>
       <AppBar position="static">
         <Toolbar>
@@ -48,33 +48,12 @@ const Layout: React.FC = ({ children }) => {
           <Typography variant="h6" color="inherit">
             <div style={{ paddingLeft: 20 }}>
               <Link href={'/'}>
-                <a>Next-SMRT</a>
+                <a>Dota2 Items Tesseract</a>
               </Link>
             </div>
           </Typography>
 
           <div style={{ flexGrow: 1 }} />
-
-          <Link href={'/about'}>
-            <a>
-              <Tooltip title={'About'}>
-                <IconButton href={''} color="inherit" aria-label="Menu">
-                  <AboutIcon />
-                </IconButton>
-              </Tooltip>
-            </a>
-          </Link>
-
-          <Tooltip title={'GitHub Repository'}>
-            <IconButton
-              target={'__blank'}
-              href={'https://github.com/csprance/next-smrt.git'}
-              color="inherit"
-              aria-label="Menu"
-            >
-              <GithubIcon />
-            </IconButton>
-          </Tooltip>
 
         </Toolbar>
       </AppBar>
