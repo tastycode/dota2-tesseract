@@ -3,7 +3,12 @@ import Fab from '@material-ui/core/Fab';
 import SnackBar from '@material-ui/core/Snackbar'
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton'
+import { spacing } from '@material-ui/system';
+
 import AddIcon from '@material-ui/icons/Search';
+import LaunchIcon from '@material-ui/icons/Launch'
+import CopyIcon from '@material-ui/icons/AssignmentTurnedIn'
 import copy from 'copy-to-clipboard'
 import * as React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -12,6 +17,7 @@ import styled from 'styled-components';
 import { media } from '../../styles/styles';
 import { addTodoThunk } from '../redux/todo/slice';
 import SingleTodoContainer from './SingleTodoContainer';
+import Button from '@material-ui/core/Button';
 
 // tslint:disable-next-line:no-var-requires
 const dotaItems = require('../items.json')
@@ -22,7 +28,6 @@ const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
   margin: 10px;
-  align-items: center;
 `;
 
 const Column = styled.div`
@@ -80,7 +85,7 @@ const HomePageContainer: React.FC = () => {
         }
       handleSearch();
     } else if (event.key === 'ArrowRight' && selectedItemIndex !== -1) {
-        window.open(`https://liquipedia.net/dota2/${currentItem.name}`)
+      openItem(currentItem)
         
     }else if (event.key === 'ArrowDown') {
         const nextIndex = selectedItemIndex + 1;
@@ -117,6 +122,10 @@ const HomePageContainer: React.FC = () => {
   const copyItem = (item: any) => {
       copy(item.name)
       setSnackOpen(true)
+  }
+
+  const openItem = (item: any) => {
+    window.open(`https://liquipedia.net/dota2/${item.name}`)
   }
 
 
@@ -170,6 +179,8 @@ const HomePageContainer: React.FC = () => {
         {items.map((item: any, i) => (
         <Row>
             <Wrapper>
+              <div style={{display: 'flex', justifyContent: 'space-between', flexDirection: 'row'}}>
+
                       <Typography
         align={'left'}
         color={i === selectedItemIndex ? 'secondary': 'textPrimary'}
@@ -183,7 +194,34 @@ const HomePageContainer: React.FC = () => {
                       >
           {item.name}
       </a>
+
       </Typography>
+      <div>
+      <Button
+      variant="contained"
+      color="secondary"
+      size="small"
+      style={{margin: '0.25em'}}
+      startIcon={<LaunchIcon/>}
+      onClick={() => openItem(item)}
+      >
+          Open
+        <LaunchIcon/>
+      </Button>
+      <Button
+      variant="contained"
+      color="default"
+      style={{margin: '0.25em'}}
+      size="small"
+      startIcon={<CopyIcon/>}
+      onClick={() => copyItem(item)}
+      >
+          Copy
+        <LaunchIcon/>
+      </Button>
+
+      </div>
+              </div>
       <ItemContent dangerouslySetInnerHTML={{__html: processedHtml(item.html)}}/>
 
                 <Spacer/>
